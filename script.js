@@ -7,12 +7,12 @@ const Gameboard = (function(){
     return board;
   }
 
-  function isSpaceAvaiable(row, col) {
+  function isCellAvaiable(row, col) {
     return !board[row][col];
   }
   
   function setBoardPiece(row, col, marker) {
-    if (isSpaceAvaiable(row, col)) {
+    if (isCellAvaiable(row, col)) {
       board[row][col] = marker;
     }
   }
@@ -32,7 +32,7 @@ const Gameboard = (function(){
 
   return {
     getBoard,
-    isSpaceAvaiable,
+    isCellAvaiable,
     setBoardPiece,
     resetBoard
   }
