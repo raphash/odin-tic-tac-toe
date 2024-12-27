@@ -38,3 +38,22 @@ const Gameboard = (function(){
   }
 
 })();
+
+// Object resposible by manipulation the players
+const PlayerManager = (function(){
+  
+  const players = [];
+
+  function getPlayers() {
+    return players;
+  }
+
+  function createPlayer(marker) {
+    players.push({marker});
+  }
+
+  return {
+    getPlayers,
+    createPlayer
+  }
+})();
