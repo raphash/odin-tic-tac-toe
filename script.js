@@ -76,32 +76,17 @@ const GameController = (function(){
 
     // Check if marker fills an row.
     for (let row = 0; row < board.length; row++) {
-      if (board[row][0] == marker &&
-          board[row][1] == marker &&
-          board[row][2] == marker) {
-            return true;
-      }
-    }
-
-    // Check if marker fills an column. 
-    for (let col = 0; col < board.length; col++) {
-      if (board[0][col] == marker &&
-          board[1][col] == marker &&
-          board[2][col] == marker) {
-            return true;
+      for (let col = 0; col < 3; col++) {
+        if (board[0][col] == marker && board[1][col] == marker && board[2][col] == marker ||
+            board[row][0] == marker && board[row][1] == marker && board[row][2] == marker) {
+              return true;
+        }
       }
     }
 
     // Check if marker fills an diagonal.
-    if (board[0][0] == marker &&
-        board[1][1] == marker &&
-        board[2][2] == marker) {
-          return true;
-    }
-
-    if (board[0][2] == marker &&
-        board[1][1] == marker &&
-        board[2][0] == marker) {
+    if (board[0][0] == marker && board[1][1] == marker && board[2][2] == marker ||
+        board[0][2] == marker && board[1][1] == marker && board[2][0] == marker) {
           return true;
     }
 
