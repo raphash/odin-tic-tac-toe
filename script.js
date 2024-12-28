@@ -150,7 +150,9 @@ const GameController = (function(){
 
 // Object resposible by rendering dinamically and interacting with GameController.
 const ScreenController = (function(){
+
   const boardElement = document.querySelector(".board");
+  const restartBtn = document.querySelector(".restart");
 
   function resetBoardCells() {
     const boardRows = Array.from(boardElement.childNodes);
@@ -215,20 +217,22 @@ const ScreenController = (function(){
 
           if (GameController.getWinner(GameController.getPreviousPlayer().marker)) {
             console.log(GameController.getPreviousPlayer().marker + " wins!");
-            Gameboard.resetBoard();
-            resetBoardCells();
           }
     
           if (GameController.getDraw()) {
             console.log("its a draw!");
-            Gameboard.resetBoard();
-            resetBoardCells();
           };
         });
 
       }
     }
   }
+
+  restartBtn.addEventListener("click", ()=>{
+    GameController.switchPlayer();
+    Gameboard.resetBoard();
+    resetBoardCells();
+  });
 
   updateBoardView();
   configureCells();

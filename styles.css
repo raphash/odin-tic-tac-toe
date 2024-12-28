@@ -7,14 +7,17 @@
 }
 
 :root {
-  --cell-border: 2px solid gray;
+  --cell-border: 2px solid rgb(201, 201, 201)
 }
 
 body {
   height: 100vh;
   display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 4fr 1fr;
   justify-items: center;
   align-items: center;
+  background-color: #000;
 }
 
 .board {
@@ -27,6 +30,7 @@ body {
 }
 
 .board .row {
+  color: white;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: 1fr;
@@ -49,4 +53,18 @@ body {
 .row[data-row="2"] .col[data-col="1"] {
   border-left: var(--cell-border);
   border-right: var(--cell-border);
+}
+
+.restart {
+  color: #fff;
+  width: 4rem;
+  height: 1.5rem;
+  border: none;
+  border-radius: .2rem;
+  background-color: rgb(24, 70, 144);
+  appearance: none;
+}
+
+.restart:active {
+  background-color: rgb(11, 48, 93);
 }
