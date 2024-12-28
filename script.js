@@ -153,6 +153,7 @@ const ScreenController = (function(){
 
   const boardElement = document.querySelector(".board");
   const restartBtn = document.querySelector(".restart");
+  let canInteract = true;
 
   function resetBoardCells() {
     const boardRows = Array.from(boardElement.childNodes);
@@ -204,23 +205,20 @@ const ScreenController = (function(){
           
           const rowIndex = e.target.parentElement.getAttribute("data-row");
           const colIndex = e.target.getAttribute("data-col");
-          
-          // Block user to select this col.
-          e.target.style["pointer-events"] = "none";
-          e.target.style["user-select"] = "none";
 
-          if (!boardCol.textContent) {
+          if (!boardCol.textContent && canInteract) {
             boardCol.textContent = GameController.getCurrentPlayer().marker;
+            GameController.playRound(rowIndex, colIndex, GameController.getCurrentPlayer().marker);
           }
-
-          GameController.playRound(rowIndex, colIndex, GameController.getCurrentPlayer().marker);
 
           if (GameController.getWinner(GameController.getPreviousPlayer().marker)) {
             console.log(GameController.getPreviousPlayer().marker + " wins!");
+            canInteract = false;
           }
     
           if (GameController.getDraw()) {
             console.log("its a draw!");
+            canInteract = false;
           };
         });
 
@@ -230,8 +228,11 @@ const ScreenController = (function(){
 
   restartBtn.addEventListener("click", ()=>{
     GameController.switchPlayer();
+    
     Gameboard.resetBoard();
-    resetBoardCells();
+              resetBoardCells();
+
+    canInteract = true;
   });
 
   updateBoardView();
