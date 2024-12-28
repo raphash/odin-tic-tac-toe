@@ -39,7 +39,7 @@ const Gameboard = (function(){
 
 })();
 
-// Object resposible by manipulating the players.
+// Object responsible by manipulating the players.
 const PlayerManager = (function(){
   
   const players = [];
@@ -58,7 +58,7 @@ const PlayerManager = (function(){
   }
 })();
 
-// Object resposible by manipulating the game flow.
+// Object responsible by manipulating the game flow.
 const GameController = (function(){
 
   // Set board to it initial state.
@@ -148,7 +148,7 @@ const GameController = (function(){
   }
 })();
 
-// Object resposible by rendering dinamically and interacting with GameController.
+// Object responsible by rendering dinamically and interacting with GameController.
 const ScreenController = (function(){
 
   const boardElement = document.querySelector(".board");
@@ -226,15 +226,12 @@ const ScreenController = (function(){
 
           // Check if game ends with a winner or a draw and block user interaction.
           if (GameController.getWinner(GameController.getPreviousPlayer().marker)) {
-            statusTitle.textContent = GameController.getPreviousPlayer().marker + " wins!";
+            statusTitle.textContent = `${GameController.getPreviousPlayer().marker} wins!`;
             canInteract = false;
-            return;
           }
-    
-          if (GameController.getDraw()) {
-            statusTitle.textContent = "its a draw!";
+          else if (GameController.getDraw()) {
+            statusTitle.textContent = `its a draw!`;
             canInteract = false;
-            return;
           };
         });
 
