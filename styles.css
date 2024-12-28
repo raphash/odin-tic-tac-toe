@@ -1,3 +1,7 @@
+@font-face { font-family: "Poppins-Regular"; src: url("fonts/Poppins-Regular.ttf"); }
+@font-face { font-family: "Poppins-Medium"; src: url("fonts/Poppins-Medium.ttf"); }
+@font-face { font-family: "Poppins-Bold"; src: url("fonts/Poppins-Bold.ttf"); }
+
 *,
 *::before,
 *::after {
@@ -14,10 +18,17 @@ body {
   height: 100vh;
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: 4fr 1fr;
+  grid-template-rows: 1fr 4fr 1fr;
   justify-items: center;
   align-items: center;
+  font-family: "Poppins-Regular";
   background-color: #000;
+}
+
+h2 {
+  color: #fff;
+  font-family: "Poppins-Medium";
+  text-transform: uppercase;
 }
 
 .board {
@@ -57,14 +68,31 @@ body {
 
 .restart {
   color: #fff;
-  width: 4rem;
-  height: 1.5rem;
+  width: 6rem;
+  height: 2rem;
   border: none;
   border-radius: .2rem;
-  background-color: rgb(24, 70, 144);
+  font-family: inherit;
+  background-color: #222;
   appearance: none;
+  transition: all 0.3s ease;
 }
 
 .restart:active {
-  background-color: rgb(11, 48, 93);
+  color: #222;
+  background-color: #fff;
+}
+
+.x {
+  background-image: url("images/x-marker.png");
+  background-size: 75%;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+
+.o {
+  background-image: url("images/o-marker.png");
+  background-size: 70%;
+  background-repeat: no-repeat;
+  background-position: center center;
 }

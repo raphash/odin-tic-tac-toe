@@ -153,6 +153,8 @@ const ScreenController = (function(){
 
   const boardElement = document.querySelector(".board");
   const restartBtn = document.querySelector(".restart");
+  const statusTitle = document.querySelector(".title");
+
   let canInteract = true;
 
   function resetBoardCells() {
@@ -164,7 +166,7 @@ const ScreenController = (function(){
       for (let col = 0; col < boardCols.length; col++) {
         const boardCol = boardCols[col];
               boardCol.removeAttribute("style");
-              boardCol.textContent = "";
+              boardCol.classList.remove("x", "o");
       }
     }
   }
@@ -206,19 +208,28 @@ const ScreenController = (function(){
           const rowIndex = e.target.parentElement.getAttribute("data-row");
           const colIndex = e.target.getAttribute("data-col");
 
-          if (!boardCol.textContent && canInteract) {
-            boardCol.textContent = GameController.getCurrentPlayer().marker;
+          if (Gameboard.isCellAvaiable(row, col) && canInteract) {
+            
+            switch (GameController.getCurrentPlayer().marker) {
+              case "x": boardCol.classList.add("x"); break;
+              case "o": boardCol.classList.add("o"); break;
+            }
+
+            statusTitle.textContent = `${GameController.getPreviousPlayer().marker} round's`
+
             GameController.playRound(rowIndex, colIndex, GameController.getCurrentPlayer().marker);
           }
 
           if (GameController.getWinner(GameController.getPreviousPlayer().marker)) {
-            console.log(GameController.getPreviousPlayer().marker + " wins!");
+            statusTitle.textContent = GameController.getPreviousPlayer().marker + " wins!";
             canInteract = false;
+            return;
           }
     
           if (GameController.getDraw()) {
-            console.log("its a draw!");
+            statusTitle.textContent = "its a draw!";
             canInteract = false;
+            return;
           };
         });
 
@@ -227,8 +238,8 @@ const ScreenController = (function(){
   }
 
   restartBtn.addEventListener("click", ()=>{
-    GameController.switchPlayer();
-    
+    statusTitle.textContent = `Tic Tac Toe`
+
     Gameboard.resetBoard();
               resetBoardCells();
 
