@@ -157,6 +157,7 @@ const ScreenController = (function(){
 
   let canInteract = true;
 
+  // Reset cellsView to it initial state.
   function resetBoardCells() {
     const boardRows = Array.from(boardElement.childNodes);
 
@@ -194,6 +195,7 @@ const ScreenController = (function(){
     }
   }
 
+  // Add listener to play the game when clicks in a cell.
   function configureCells() {
     const boardRows = Array.from(boardElement.childNodes);
 
@@ -208,8 +210,10 @@ const ScreenController = (function(){
           const rowIndex = e.target.parentElement.getAttribute("data-row");
           const colIndex = e.target.getAttribute("data-col");
 
+          // Check if cell is avaiable and play a round with its avaiable.
           if (Gameboard.isCellAvaiable(row, col) && canInteract) {
             
+            // Add a image marker based on player marker value.
             switch (GameController.getCurrentPlayer().marker) {
               case "x": boardCol.classList.add("x"); break;
               case "o": boardCol.classList.add("o"); break;
@@ -220,6 +224,7 @@ const ScreenController = (function(){
             GameController.playRound(rowIndex, colIndex, GameController.getCurrentPlayer().marker);
           }
 
+          // Check if game ends with a winner or a draw and block user interaction.
           if (GameController.getWinner(GameController.getPreviousPlayer().marker)) {
             statusTitle.textContent = GameController.getPreviousPlayer().marker + " wins!";
             canInteract = false;
@@ -237,6 +242,7 @@ const ScreenController = (function(){
     }
   }
 
+  // Restart the gameboard and boardView to initial state.
   restartBtn.addEventListener("click", ()=>{
     statusTitle.textContent = `Tic Tac Toe`
 
