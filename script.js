@@ -122,6 +122,10 @@ const GameController = (function(){
     return currentPlayer;
   }
 
+  function getPreviousPlayer() {
+    return currentPlayer == players[0] ? players[1] : players[0];
+  }
+
   function switchPlayer() {
     currentPlayer = currentPlayer == players[0] ? players[1] : players[0];
   }
@@ -130,25 +134,102 @@ const GameController = (function(){
     if (Gameboard.isCellAvaiable(row, col)) {
       Gameboard.setBoardPiece(row, col, marker);
 
-      if (getWinner(marker)) {
-        console.log(`${marker} is the winner!`);
-        Gameboard.resetBoard();
-      }
-
-      if (getDraw()) {
-        console.log(`its a draw!`);
-        Gameboard.resetBoard();
-      };
-
       switchPlayer();
     }
   }
 
   return {
+    getPreviousPlayer,
     getCurrentPlayer,
     switchPlayer,
     playRound,
     getWinner,
     getDraw,
   }
+})();
+
+// Object resposible by rendering dinamically and interacting with GameController.
+const ScreenController = (function(){
+  const boardElement = document.querySelector(".board");
+
+  function resetBoardCells() {
+    const boardRows = Array.from(boardElement.childNodes);
+
+    for (let row = 0; row < boardRows.length; row++) {
+      const boardCols = Array.from(boardRows[row].childNodes);
+
+      for (let col = 0; col < boardCols.length; col++) {
+        const boardCol = boardCols[col];
+              boardCol.removeAttribute("style");
+              boardCol.textContent = "";
+      }
+    }
+  }
+
+  // Insert rows and columns in boardElement based in Gameboard.
+  function updateBoardView() {
+    Gameboard.resetBoard();
+
+    const board = Gameboard.getBoard();
+    
+    for (let row = 0; row < board.length; row++) {
+      const rowElement = document.createElement("div");
+            rowElement.classList.add("row");
+            rowElement.setAttribute("data-row", row);
+
+      for (let col = 0; col < board[row].length; col++) {
+        const colElement = document.createElement("div")
+              colElement.classList.add("col");
+              colElement.setAttribute("data-col", col);
+
+        rowElement.appendChild(colElement);
+      }
+
+      boardElement.appendChild(rowElement);
+    }
+  }
+
+  function configureCells() {
+    const boardRows = Array.from(boardElement.childNodes);
+
+    for (let row = 0; row < boardRows.length; row++) {
+      const boardCols = Array.from(boardRows[row].childNodes);
+
+      for (let col = 0; col < boardCols.length; col++) {
+        const boardCol = boardCols[col];
+
+        boardCol.addEventListener("click", (e)=>{
+          
+          const rowIndex = e.target.parentElement.getAttribute("data-row");
+          const colIndex = e.target.getAttribute("data-col");
+          
+          // Block user to select this col.
+          e.target.style["pointer-events"] = "none";
+          e.target.style["user-select"] = "none";
+
+          if (!boardCol.textContent) {
+            boardCol.textContent = GameController.getCurrentPlayer().marker;
+          }
+
+          GameController.playRound(rowIndex, colIndex, GameController.getCurrentPlayer().marker);
+
+          if (GameController.getWinner(GameController.getPreviousPlayer().marker)) {
+            console.log(GameController.getPreviousPlayer().marker + " wins!");
+            Gameboard.resetBoard();
+            resetBoardCells();
+          }
+    
+          if (GameController.getDraw()) {
+            console.log("its a draw!");
+            Gameboard.resetBoard();
+            resetBoardCells();
+          };
+        });
+
+      }
+    }
+  }
+
+  updateBoardView();
+  configureCells();
 })();
